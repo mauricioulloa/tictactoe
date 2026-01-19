@@ -5,16 +5,25 @@ import (
 	"strings"
 )
 
-// ANSI color codes
+// ANSI color codes - Atipicus branding
 const (
-	colorReset   = "\033[0m"
-	colorCyan    = "\033[36m"
-	colorMagenta = "\033[35m"
-	colorYellow  = "\033[33m"
-	colorGreen   = "\033[32m"
-	colorDim     = "\033[2m"
-	colorBold    = "\033[1m"
-	clearScreen  = "\033[2J\033[H"
+	colorReset = "\033[0m"
+	colorBold  = "\033[1m"
+	colorDim   = "\033[2m"
+
+	// Atipicus brand colors (24-bit RGB)
+	colorMint     = "\033[38;2;152;216;200m" // Mint/Cyan accent - Player X
+	colorLavender = "\033[38;2;168;155;189m" // Lavender/Purple - Player O
+	colorWhite    = "\033[38;2;255;255;255m" // Pure white - Winners
+	colorMuted    = "\033[38;2;100;100;110m" // Muted gray - Position numbers
+
+	// Aliases for compatibility
+	colorCyan    = colorMint
+	colorMagenta = colorLavender
+	colorYellow  = "\033[38;2;255;200;100m" // Warm warning color
+	colorGreen   = colorWhite               // Use white for winning highlight
+
+	clearScreen = "\033[2J\033[H"
 )
 
 // Renderer handles all terminal output
@@ -39,7 +48,8 @@ func (r *Renderer) RenderBoard(board *Board) {
 	}
 
 	fmt.Println()
-	fmt.Println(colorBold + "   Tic-Tac-Toe" + colorReset)
+	fmt.Printf("   %s%sTic-Tac-Toe%s\n", colorBold, colorWhite, colorReset)
+	fmt.Printf("   %sby Atipicus%s\n", colorLavender, colorReset)
 	fmt.Println()
 
 	for row := 0; row < 3; row++ {
@@ -85,7 +95,7 @@ func (r *Renderer) renderCell(cell Cell, idx int, isWinning bool) {
 		}
 	default:
 		// Show position number for empty cells (1-9)
-		fmt.Print(colorDim + fmt.Sprintf("%d", idx+1) + colorReset)
+		fmt.Print(colorMuted + fmt.Sprintf("%d", idx+1) + colorReset)
 	}
 }
 
@@ -139,12 +149,13 @@ func (r *Renderer) RenderGoodbye() {
 // RenderMenu displays the game mode selection menu
 func (r *Renderer) RenderMenu() {
 	fmt.Println()
-	fmt.Println(colorBold + "   Tic-Tac-Toe" + colorReset)
+	fmt.Printf("   %s%sTic-Tac-Toe%s\n", colorBold, colorWhite, colorReset)
+	fmt.Printf("   %sby Atipicus%s\n", colorLavender, colorReset)
 	fmt.Println()
 	fmt.Println("   Select game mode:")
 	fmt.Println()
-	fmt.Printf("   %s1%s. Two Players\n", colorCyan, colorReset)
-	fmt.Printf("   %s2%s. vs Computer\n", colorMagenta, colorReset)
+	fmt.Printf("   %s1%s. Two Players\n", colorMint, colorReset)
+	fmt.Printf("   %s2%s. vs Computer\n", colorLavender, colorReset)
 	fmt.Println()
 	fmt.Print("  Enter choice (1 or 2): ")
 }
